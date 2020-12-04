@@ -1,5 +1,4 @@
 ﻿using Quartzmin.Helpers;
-using Quartzmin.Models;
 using Quartzmin.TypeHandlers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 
 #region Target-Specific Directives
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Features;
 #endif
@@ -57,7 +56,7 @@ namespace Quartzmin.Controllers
             return Html(targetType.RenderView(Services, newValue));
         }
 
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
         private class BadRequestResult : IActionResult
         {
             public string ReasonPhrase { get; set; }

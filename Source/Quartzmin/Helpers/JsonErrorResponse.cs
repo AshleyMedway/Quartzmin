@@ -1,9 +1,9 @@
 ﻿
 namespace Quartzmin.Helpers
 {
-#if NETSTANDARD
-    using Microsoft.AspNetCore.Mvc.Filters;
+#if NETSTANDARD || NETCORE
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
     using Newtonsoft.Json;
 
     public class JsonErrorResponseAttribute : ActionFilterAttribute

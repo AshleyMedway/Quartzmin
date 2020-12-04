@@ -4,14 +4,14 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Quartzmin.Models;
 using Quartz;
+using Quartzmin.Models;
 
 namespace Quartzmin.Controllers
 {
     #region Target-Specific Directives
 
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Primitives;
     using Newtonsoft.Json;
@@ -143,7 +143,7 @@ namespace Quartzmin.Controllers
 
         public IActionResult TextFile(string content, string contentType, DateTime lastModified, string etag)
         {
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
             Response.Headers.Add("Last-Modified", lastModified.ToUniversalTime().ToString("R"));
             Response.Headers.Add("ETag", etag);
 #endif

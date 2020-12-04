@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 #region Target-Specific Directives
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
 using Microsoft.AspNetCore.Mvc;
 #endif
 #if NETFRAMEWORK

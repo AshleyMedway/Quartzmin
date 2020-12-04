@@ -4,7 +4,7 @@ namespace Quartzmin.Models
 {
     public class FormFile
     {
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
         readonly Microsoft.AspNetCore.Http.IFormFile _file;
         public FormFile(Microsoft.AspNetCore.Http.IFormFile file) => _file = file;
 

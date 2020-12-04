@@ -9,11 +9,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Quartz.Impl.Matchers;
 using Quartz.Plugins.RecentHistory;
 
 #region Target-Specific Directives
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
 using HttpRequest = Microsoft.AspNetCore.Http.HttpRequest;
 #endif
 #if NETFRAMEWORK
@@ -68,7 +67,7 @@ namespace Quartzmin
 
         public static string ReadAsString(this HttpRequest request)
         {
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
             using (var ms = new MemoryStream())
             {
                 request.Body.CopyTo(ms);

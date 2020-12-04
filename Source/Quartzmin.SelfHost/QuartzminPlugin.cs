@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 #endif
@@ -30,7 +30,7 @@ namespace Quartzmin.SelfHost
             return Task.FromResult(0);
         }
 
-#if NETSTANDARD
+#if NETSTANDARD || NETCORE
         public async Task Start(CancellationToken cancellationToken = default(CancellationToken))
         {
             var host = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder().Configure(app => {

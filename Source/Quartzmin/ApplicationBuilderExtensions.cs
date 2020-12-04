@@ -1,13 +1,18 @@
-﻿#if NETSTANDARD
+﻿#if NETSTANDARD || NETCORE
 
+using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using System;
-using System.Reflection;
+
+#if NETCORE
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+#endif
 
 namespace Quartzmin
 {
@@ -27,7 +32,7 @@ namespace Quartzmin
                 context.Items[typeof(Services)] = services;
                 await next.Invoke();
             });
-            
+
             app.UseExceptionHandler(errorApp =>
             {
                 errorApp.Run(async context =>
@@ -39,12 +44,22 @@ namespace Quartzmin
                 });
             });
 
+#if NETCORE
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(nameof(Quartzmin), "{controller=Scheduler}/{action=Index}");
+            });
+#endif
+
+#if NETSTANDARD
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: nameof(Quartzmin),
                     template: "{controller=Scheduler}/{action=Index}");
             });
+#endif
         }
 
         private static void UseFileServer(this IApplicationBuilder app, QuartzminOptions options)
@@ -70,7 +85,18 @@ namespace Quartzmin
         {
             services.AddMvcCore()
                 .AddApplicationPart(Assembly.GetExecutingAssembly())
+
+#if NETSTANDARD
                 .AddJsonFormatters();
+#endif
+#if NETCORE
+                .AddNewtonsoftJson(o =>
+                {
+                    o.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+#endif
+
         }
 
     }
